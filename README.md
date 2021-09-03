@@ -4,7 +4,7 @@
 
 **Dependencies:**
 
-[gliderlabs/ssh]: https://github.com/gliderlabs/ssh
+[gliderlabs/ssh](https://github.com/gliderlabs/ssh)
 
 ****
 
