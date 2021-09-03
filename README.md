@@ -5,6 +5,7 @@
 **Dependencies:**
 
 - [gliderlabs/ssh](https://github.com/gliderlabs/ssh)
+- [notify-send](https://man.cx/notify-send)
 
 ****
 
