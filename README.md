@@ -34,10 +34,14 @@ for a lightweight binary.
 ./ssh-honeybot-go -p <port>
 ```
 
+```bash
+./ssh-honeybot-go -p <port> -n
+```
+
 **Example:**
 
 ```bash
-./ssh-honeypot-go -p 1234
+./ssh-honeypot-go -p 1234 -n
 ```
 
 ****
@@ -45,4 +49,5 @@ for a lightweight binary.
 **Flags:**
 
 - '**-p**' ==> enter the honeypot server port(default: **2222**)
+- '**-n**' ==> activate notifier service(default: false)
 

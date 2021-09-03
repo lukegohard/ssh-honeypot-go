@@ -8,18 +8,21 @@ import (
 	"log/syslog"
 	"os"
 
+	"github.com/gliderlabs/ssh"
+
 	"github.com/Ex0dIa-dev/ssh-honeypot-go/helpers"
+	"github.com/Ex0dIa-dev/ssh-honeypot-go/notifier"
 	"github.com/Ex0dIa-dev/ssh-honeypot-go/writers"
 	"github.com/Ex0dIa-dev/ssh-honeypot-go/writers/colors"
-	"github.com/gliderlabs/ssh"
 )
 
 func init() {
 	flag.StringVar(&port, "p", "2222", "enter the port for the honeypot server")
-
+	flag.BoolVar(&notifyService, "n", false, "activate notifier service")
 }
 
 var port string
+var notifyService bool
 var attempts = 0
 
 func main() {
@@ -38,6 +41,7 @@ func main() {
 	}
 
 	log.Printf("[+]Starting Honeypot Server on Address: %v\n", s.Addr)
+	log.Printf("[+]Notifier Service Activated: %v", notifyService)
 	log.Fatal(s.ListenAndServe())
 }
 
@@ -48,7 +52,12 @@ func sessionHandler(s ssh.Session) {
 
 func authHandler(ctx ssh.Context, passwd string) bool {
 	attempts++
-	log.Printf("[%d]User: %s,Password: %s, Address: %s", attempts, ctx.User(), passwd, ctx.RemoteAddr())
-	return true
+	body := fmt.Sprintf("User: %s,Password: %s, Address: %s", ctx.User(), passwd, ctx.RemoteAddr())
+	log.Println(fmt.Sprintf("[%d]%s", attempts, body))
 
+	if notifyService {
+		notifier.SendNotify("ssh-honeypot-go", fmt.Sprintf("Connection Attempt: %d", attempts), body)
+	}
+
+	return true
 }
