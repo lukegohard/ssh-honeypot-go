@@ -74,3 +74,9 @@ ssh-keygen -t rsa -b 2048 -N "" -f hostkey_rsa
 - '**-n**' ==> activate notifier service(default: false)
 - '**-k**' ==> enter the filepath of host private key
 
+****
+
+**TODO:**
+
+- [ ] *adding a fake shell as sessionHandler*
+
