@@ -2,12 +2,14 @@ package helpers
 
 import "os"
 
+// CheckErr checks errors
 func CheckErr(e error) {
 	if e != nil {
 		panic(e)
 	}
 }
 
+// FileExists return true if "filepath" exists, else false
 func FileExists(filepath string) bool {
 
 	stat, err := os.Stat(filepath)

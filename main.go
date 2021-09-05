@@ -31,9 +31,9 @@ func main() {
 
 	flag.Parse()
 
+	// setting Log Output to ==> 1) Os.Stdout 2) Syslog
 	logwriter, err := syslog.New(syslog.LOG_INFO, os.Args[0])
 	helpers.CheckErr(err)
-
 	log.SetOutput(io.MultiWriter(logwriter, os.Stdout))
 
 	s := &ssh.Server{
@@ -42,13 +42,14 @@ func main() {
 		PasswordHandler: authHandler,
 	}
 
+	// if hostKeyFile is empty,the key will be auto-generated
+	// else key will be read from file
 	if hostKeyFile != "" {
 		key, err := hostkey.ReadHostKeyFile(hostKeyFile)
 		helpers.CheckErr(err)
 		s.AddHostKey(key)
 	}
 
-	//logging some infos
 	log.Printf("[+]Starting Honeypot Server on Address: %v\n", s.Addr)
 	if hostKeyFile == "" {
 		log.Print("[+]Honeypot HostKey Mode: auto-generated")
@@ -60,13 +61,13 @@ func main() {
 
 }
 
-//function called after authentication
+//sessionHandler is called after authentication
 func sessionHandler(s ssh.Session) {
 	writers.ColorWrite(s, writers.Welcome, colors.Green)
 	writers.PrintEnd(s, 1)
 }
 
-//function where we collect authentication info(username,password,ip) and log them
+//authHandler collects authentication info(username,password,ip) and logs them
 func authHandler(ctx ssh.Context, passwd string) bool {
 	attempts++
 	body := fmt.Sprintf("User: %s,Password: %s, Address: %s", ctx.User(), passwd, ctx.RemoteAddr())
