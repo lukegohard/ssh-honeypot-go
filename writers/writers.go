@@ -11,6 +11,7 @@ import (
 
 const Welcome = "Hello Hacker! You're a new bee in my honeypot! Bye :D"
 
+//a cool write "animation" like a hacker
 func Write(w io.Writer, str string) {
 
 	chars := strings.Split(str, "")
@@ -22,10 +23,12 @@ func Write(w io.Writer, str string) {
 
 }
 
+//same as Write but colored
 func ColorWrite(w io.Writer, str, color string) {
 	Write(w, color+str+colors.Reset)
 }
 
+//print a newline char at w
 func PrintEnd(w io.Writer, ends int) {
 
 	for i := 0; i < ends; i++ {

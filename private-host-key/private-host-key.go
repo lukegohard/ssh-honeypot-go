@@ -8,6 +8,7 @@ import (
 	gossh "golang.org/x/crypto/ssh"
 )
 
+//read the given hostkeyfile and return a gossh.Signer which contains the key
 func ReadHostKeyFile(filepath string) (gossh.Signer, error) {
 
 	if !helpers.FileExists(filepath) {
