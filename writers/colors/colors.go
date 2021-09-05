@@ -1,28 +1,28 @@
 package colors
 
-// ascii code for reset colors
+// Reset ascii code
 const Reset = "\033[0m"
 
-// ascii red code
+// Red ascii code
 const Red = "\033[31m"
 
-// ascii green code
+// Green ascii code
 const Green = "\033[32m"
 
-// ascii yellow code
+// Yellow ascii code
 const Yellow = "\033[33m"
 
-// ascii blue code
+// Blue ascii code
 const Blue = "\033[34m"
 
-// ascii purple code
+// Purple ascii code
 const Purple = "\033[35m"
 
-// ascii cyan code
+// Cyan ascii code
 const Cyan = "\033[36m"
 
-// ascii gray code
+// Gray ascii code
 const Gray = "\033[37m"
 
-// ascii white code
+// White ascii code
 const White = "\033[97m"
