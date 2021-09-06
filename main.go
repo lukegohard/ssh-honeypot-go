@@ -9,6 +9,7 @@ import (
 	"os"
 
 	"github.com/gliderlabs/ssh"
+	"golang.org/x/term"
 
 	"github.com/Ex0dIa-dev/ssh-honeypot-go/helpers"
 	loggingipaddress "github.com/Ex0dIa-dev/ssh-honeypot-go/logging-ip-address"
@@ -64,13 +65,39 @@ func main() {
 
 }
 
-//sessionHandler is called after authentication
+// sessionHandler is called after authentication
 func sessionHandler(s ssh.Session) {
 	writers.ColorWrite(s, writers.Welcome, colors.Green)
 	writers.PrintEnd(s, 1)
+
+	term := term.NewTerminal(s, fmt.Sprintf(
+		"%s%s%s@%s%s%s>$%s ",
+		colors.Yellow,
+		s.User(),
+		colors.Reset,
+		colors.Blue,
+		s.LocalAddr(),
+		colors.Green,
+		colors.Reset,
+	))
+	for {
+
+		ln, err := term.ReadLine()
+		helpers.CheckErr(err)
+		if ln == "exit" {
+			break
+		}
+
+		writers.Write(term, ln)
+		writers.PrintEnd(term, 1)
+	}
+
+	_, err := term.Write([]byte(colors.Reset))
+	helpers.CheckErr(err)
+	s.Close()
 }
 
-//authHandler collects authentication info(username,password,ip) and logs them
+// authHandler collects authentication info(username,password,ip) and logs them
 func authHandler(ctx ssh.Context, passwd string) bool {
 	attempts++
 	body := fmt.Sprintf("User: %s,Password: %s, Address: %s", ctx.User(), passwd, ctx.RemoteAddr())
