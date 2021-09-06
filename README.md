@@ -1,7 +1,7 @@
 ### ssh-honeypot-go
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/Ex0dIa-dev/ssh-honeypot-go)](https://goreportcard.com/report/github.com/Ex0dIa-dev/ssh-honeypot-go)
-
+[![Honeypot Log](./honeypot-logo.png)]
 *****
 
 **Dependencies:**
