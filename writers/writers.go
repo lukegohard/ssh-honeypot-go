@@ -9,6 +9,7 @@ import (
 	"github.com/Ex0dIa-dev/ssh-honeypot-go/writers/colors"
 )
 
+// Welcome message printed after authentication
 const Welcome = "Hello Hacker! You're a new bee in my honeypot! Bye :D"
 
 // Write print text with a cool "animation" like a hacker
@@ -28,7 +29,7 @@ func ColorWrite(w io.Writer, str, color string) {
 	Write(w, color+str+colors.Reset)
 }
 
-// PrintENd print a newline char at w
+// PrintEnd print a newline char at w
 func PrintEnd(w io.Writer, ends int) {
 
 	for i := 0; i < ends; i++ {
