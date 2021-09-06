@@ -3,3 +3,5 @@ ssh-honeypot-go
 hostkey_rsa
 hostkey_rsa.pub
 id_rsa.pub
+
+logs/

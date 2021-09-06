@@ -11,6 +11,7 @@ import (
 	"github.com/gliderlabs/ssh"
 
 	"github.com/Ex0dIa-dev/ssh-honeypot-go/helpers"
+	loggingipaddress "github.com/Ex0dIa-dev/ssh-honeypot-go/logging-ip-address"
 	"github.com/Ex0dIa-dev/ssh-honeypot-go/notifier"
 	hostkey "github.com/Ex0dIa-dev/ssh-honeypot-go/private-host-key"
 	"github.com/Ex0dIa-dev/ssh-honeypot-go/writers"
@@ -21,10 +22,11 @@ func init() {
 	flag.StringVar(&port, "p", "2222", "enter the port for the honeypot server")
 	flag.StringVar(&hostKeyFile, "k", "", "enter the filepath of hostkey file")
 	flag.BoolVar(&notifyService, "n", false, "activate notifier service")
+	flag.BoolVar(&logIpAddress, "li", false, "activate ip address logging")
 }
 
 var port, hostKeyFile string
-var notifyService bool
+var notifyService, logIpAddress bool
 var attempts = 0
 
 func main() {
@@ -57,6 +59,7 @@ func main() {
 		log.Printf("[+]Honeypot HostKey Mode: user-input-file")
 	}
 	log.Printf("[+]Notifier Service Activated: %v", notifyService)
+	log.Printf("[+]Logging IP Address: %v", logIpAddress)
 	log.Fatal(s.ListenAndServe())
 
 }
@@ -75,6 +78,10 @@ func authHandler(ctx ssh.Context, passwd string) bool {
 
 	if notifyService {
 		notifier.SendNotify("ssh-honeypot-go", fmt.Sprintf("Connection Attempt: %d", attempts), body)
+	}
+
+	if logIpAddress {
+		loggingipaddress.LogIPAddr(ctx.RemoteAddr())
 	}
 
 	return true
