@@ -21,12 +21,12 @@ import (
 func init() {
 	flag.StringVar(&port, "p", "2222", "enter the port for the honeypot server")
 	flag.StringVar(&hostKeyFile, "k", "", "enter the filepath of hostkey file")
-	flag.BoolVar(&notifyService, "n", false, "activate notifier service")
-	flag.BoolVar(&logIpAddress, "li", false, "activate ip address logging")
+	flag.BoolVar(&notifyServiceActivated, "n", false, "activate notifier service")
+	flag.BoolVar(&logIPAddressActivated, "li", false, "activate ip address logging")
 }
 
 var port, hostKeyFile string
-var notifyService, logIpAddress bool
+var notifyServiceActivated, logIPAddressActivated bool
 var attempts = 0
 
 func main() {
@@ -58,8 +58,8 @@ func main() {
 	} else {
 		log.Printf("[+]Honeypot HostKey Mode: user-input-file")
 	}
-	log.Printf("[+]Notifier Service Activated: %v", notifyService)
-	log.Printf("[+]Logging IP Address: %v", logIpAddress)
+	log.Printf("[+]Notifier Service Activated: %v", notifyServiceActivated)
+	log.Printf("[+]Logging IP Address: %v", logIPAddressActivated)
 	log.Fatal(s.ListenAndServe())
 
 }
@@ -76,11 +76,11 @@ func authHandler(ctx ssh.Context, passwd string) bool {
 	body := fmt.Sprintf("User: %s,Password: %s, Address: %s", ctx.User(), passwd, ctx.RemoteAddr())
 	log.Println(fmt.Sprintf("[%d]%s", attempts, body))
 
-	if notifyService {
+	if notifyServiceActivated {
 		notifier.SendNotify("ssh-honeypot-go", fmt.Sprintf("Connection Attempt: %d", attempts), body)
 	}
 
-	if logIpAddress {
+	if logIPAddressActivated {
 		loggingipaddress.LogIPAddr(ctx.RemoteAddr())
 	}
 

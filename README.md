@@ -58,6 +58,10 @@ ssh-keygen -t rsa -b 2048 -N "" -f hostkey_rsa
 ./ssh-honeypot-go -p <port> -n -k <host private key filepath>
 ```
 
+```bash
+./ssh-honeypot-go -p <port> -n -li
+```
+
 **Example:**
 
 ```bash
@@ -68,6 +72,12 @@ ssh-keygen -t rsa -b 2048 -N "" -f hostkey_rsa
 ./ssh-honeypot-go -p 1234 -k hostkey_rsa -n
 ```
 
+```bash
+./ssh-honeypot-go -p 1234 -k hostkey_rsa -n -li
+```
+
+
+
 ****
 
 **Flags:**
@@ -75,11 +85,12 @@ ssh-keygen -t rsa -b 2048 -N "" -f hostkey_rsa
 - '**-p**' ==> enter the honeypot server port(default: **2222**)
 - '**-n**' ==> activate notifier service(default: false)
 - '**-k**' ==> enter the filepath of host private key
+- '**-li**' ==> activate ip address logging(logs path: "./logs/ip-address")
 
 ****
 
 **TODO LIST:**
 
 - [ ] *adding a fake shell as sessionHandler*
-- [ ] log collected ip addresses in a file
+- [x] log collected ip addresses in a file
 

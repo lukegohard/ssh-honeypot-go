@@ -10,7 +10,10 @@ import (
 	"github.com/Ex0dIa-dev/ssh-honeypot-go/helpers"
 )
 
+// logRootPath is the root directory which contains all log files
 const logRootPath = "./logs/"
+
+// logIPPath is the directory which constains all ip address log files
 const logIPPath = "./logs/ip-address/"
 
 // LogIPAddr write in the logIPPath file the given ip
