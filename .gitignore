@@ -5,3 +5,4 @@ hostkey_rsa.pub
 id_rsa.pub
 
 logs/
+scripts/
