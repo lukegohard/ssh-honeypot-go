@@ -10,7 +10,7 @@ import (
 )
 
 // Welcome message printed after authentication
-const Welcome = "Hello Hacker! You're a new bee in my honeypot! Bye :D"
+//const Welcome = "Hello Hacker! You're a new bee in my honeypot! Bye :D"
 
 // Write print text with a cool "animation" like a hacker
 func Write(w io.Writer, str string) {
