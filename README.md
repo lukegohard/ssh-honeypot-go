@@ -39,6 +39,21 @@ ssh-keygen -t rsa -b 2048 -N "" -f hostkey_rsa
 
 ****
 
+**Changing Username and Password:**
+
+Edit the *config.json* file.
+
+Default:
+
+```json
+{
+	"user": "root",
+	"password": "toor"
+}
+```
+
+****
+
 **Usage:**
 
 ```bash
