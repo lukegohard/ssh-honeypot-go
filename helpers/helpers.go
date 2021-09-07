@@ -1,6 +1,8 @@
 package helpers
 
-import "os"
+import (
+	"os"
+)
 
 // CheckErr checks errors
 func CheckErr(e error) {

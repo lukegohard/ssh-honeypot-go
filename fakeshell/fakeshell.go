@@ -2,6 +2,7 @@ package fakeshell
 
 import (
 	"fmt"
+	"io"
 	"io/ioutil"
 	"strings"
 
@@ -20,7 +21,7 @@ func FakeShell(s ssh.Session) {
 
 	bytes, err := ioutil.ReadFile(cmdsFilePath)
 	helpers.CheckErr(err)
-	commands_list := strings.Split(string(bytes), "\n")
+	commandsList := strings.Split(string(bytes), "\n")
 
 	term := term.NewTerminal(s, fmt.Sprintf(
 		"%s%s%s@%s%s%s>$%s ",
@@ -36,15 +37,21 @@ func FakeShell(s ssh.Session) {
 	for {
 
 		ln, err := term.ReadLine()
-		helpers.CheckErr(err)
+		if err != nil {
+			if err == io.EOF {
+				break
+			} else {
+				panic(err)
+			}
+		}
 		if ln == "exit" {
 			break
 		}
 
-		command_and_args := strings.Split(ln, " ")
-		command := command_and_args[0]
+		commandAndArgs := strings.Split(ln, " ")
+		command := commandAndArgs[0]
 		unknown := true
-		for _, c := range commands_list {
+		for _, c := range commandsList {
 			if c == command {
 				unknown = false
 				break
