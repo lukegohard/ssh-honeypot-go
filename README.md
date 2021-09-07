@@ -61,6 +61,10 @@ ssh-keygen -t rsa -b 2048 -N "" -f hostkey_rsa
 ./ssh-honeypot-go -p <port> -n -li
 ```
 
+```bash
+./ssh-honeypot-go -p <port> -la
+```
+
 **Example:**
 
 ```bash
@@ -85,6 +89,7 @@ ssh-keygen -t rsa -b 2048 -N "" -f hostkey_rsa
 - '**-n**' ==> activate notifier service(default: false)
 - '**-k**' ==> enter the filepath of host private key
 - '**-li**' ==> activate ip address logging(logs path: "./logs/ip-address")
+- **'-la'** ==> logging all attempts, failed too
 
 ****
 
