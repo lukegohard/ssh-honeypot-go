@@ -9,6 +9,7 @@ import (
 	"log"
 	"log/syslog"
 	"os"
+	"time"
 
 	"github.com/gliderlabs/ssh"
 
@@ -35,9 +36,11 @@ var attempts = 0
 
 var config Config
 
+// Config contains the json "struct" of config.json file
 type Config struct {
 	User     string `json:"user"`
 	Password string `json:"password"`
+	// IdleTimeoutSeconds int    `json:"idletimeoutseconds"`
 }
 
 func main() {
@@ -59,6 +62,7 @@ func main() {
 		Addr:            fmt.Sprintf("0.0.0.0:%s", port),
 		Handler:         sessionHandler,
 		PasswordHandler: authHandler,
+		IdleTimeout:     45 * time.Second,
 	}
 
 	// if hostKeyFile is empty,the key will be auto-generated
@@ -85,8 +89,6 @@ func main() {
 
 // sessionHandler is called after authentication
 func sessionHandler(s ssh.Session) {
-	// writers.ColorWrite(s, writers.Welcome, colors.Green)
-	// writers.PrintEnd(s, 1)
 	fakeshell.FakeShell(s)
 }
 

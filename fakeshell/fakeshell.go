@@ -64,6 +64,13 @@ func FakeShell(s ssh.Session) {
 	}
 
 	_, err = term.Write([]byte(colors.Reset))
-	helpers.CheckErr(err)
+	if err != nil {
+		if err == io.EOF {
+			s.Close()
+			return
+		} else {
+			panic(err)
+		}
+	}
 	s.Close()
 }
