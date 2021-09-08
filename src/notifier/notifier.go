@@ -3,7 +3,7 @@ package notifier
 import (
 	"os/exec"
 
-	"github.com/Ex0dIa-dev/ssh-honeypot-go/helpers"
+	"github.com/Ex0dIa-dev/ssh-honeypot-go/src/helpers"
 )
 
 // SendNotify send a notification using linux "notify-send" tool

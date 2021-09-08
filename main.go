@@ -1,11 +1,9 @@
 package main
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"log/syslog"
 	"os"
@@ -13,11 +11,11 @@ import (
 
 	"github.com/gliderlabs/ssh"
 
-	"github.com/Ex0dIa-dev/ssh-honeypot-go/fakeshell"
-	"github.com/Ex0dIa-dev/ssh-honeypot-go/helpers"
-	loggingipaddress "github.com/Ex0dIa-dev/ssh-honeypot-go/logging-ip-address"
-	"github.com/Ex0dIa-dev/ssh-honeypot-go/notifier"
-	hostkey "github.com/Ex0dIa-dev/ssh-honeypot-go/private-host-key"
+	"github.com/Ex0dIa-dev/ssh-honeypot-go/src/fakeshell"
+	"github.com/Ex0dIa-dev/ssh-honeypot-go/src/helpers"
+	loggingipaddress "github.com/Ex0dIa-dev/ssh-honeypot-go/src/logging-ip-address"
+	"github.com/Ex0dIa-dev/ssh-honeypot-go/src/notifier"
+	hostkey "github.com/Ex0dIa-dev/ssh-honeypot-go/src/private-host-key"
 )
 
 func init() {
@@ -34,14 +32,7 @@ var port, hostKeyFile string
 var notifyServiceActivated, logIPAddressActivated, logAllAttempts bool
 var attempts = 0
 
-var config Config
-
-// Config contains the json "struct" of config.json file
-type Config struct {
-	User     string `json:"user"`
-	Password string `json:"password"`
-	// IdleTimeoutSeconds int    `json:"idletimeoutseconds"`
-}
+var config helpers.Config
 
 func main() {
 
@@ -52,11 +43,7 @@ func main() {
 	helpers.CheckErr(err)
 	log.SetOutput(io.MultiWriter(logwriter, os.Stdout))
 
-	// reading config file
-	configBytes, err := ioutil.ReadFile("./config.json")
-	helpers.CheckErr(err)
-	err = json.Unmarshal(configBytes, &config)
-	helpers.CheckErr(err)
+	config = helpers.ParseConfigFile()
 
 	s := &ssh.Server{
 		Addr:            fmt.Sprintf("0.0.0.0:%s", port),
@@ -97,7 +84,7 @@ func authHandler(ctx ssh.Context, passwd string) bool {
 	attempts++
 	body := fmt.Sprintf("User: %s,Password: %s, Address: %s, Status: ", ctx.User(), passwd, ctx.RemoteAddr())
 
-	if ctx.User() != config.User || passwd != config.Password {
+	if ctx.User() != config.Auth.User || passwd != config.Auth.Password {
 
 		if logAllAttempts {
 			log.Println(fmt.Sprintf("[%d]%s%s", attempts, body, "failed"))

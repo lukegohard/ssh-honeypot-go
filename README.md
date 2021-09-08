@@ -47,8 +47,11 @@ Default:
 
 ```json
 {
-	"user": "root",
-	"password": "toor"
+	"creator": "Ex0dIa-dev",
+	"auth": {
+		"user": 	"root",
+		"password": "toor"
+	}
 }
 ```
 

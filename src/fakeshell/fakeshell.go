@@ -6,20 +6,18 @@ import (
 	"io/ioutil"
 	"strings"
 
-	"github.com/Ex0dIa-dev/ssh-honeypot-go/helpers"
-	"github.com/Ex0dIa-dev/ssh-honeypot-go/writers"
-	"github.com/Ex0dIa-dev/ssh-honeypot-go/writers/colors"
+	"github.com/Ex0dIa-dev/ssh-honeypot-go/src/helpers"
+	"github.com/Ex0dIa-dev/ssh-honeypot-go/src/writers"
+	"github.com/Ex0dIa-dev/ssh-honeypot-go/src/writers/colors"
 	"github.com/gliderlabs/ssh"
 	"golang.org/x/term"
 )
-
-const cmdsFilePath = "./fakeshell/cmds.txt"
 
 // FakeShell create a fake shell to waste attacker's time
 // Read command, and "execute" them
 func FakeShell(s ssh.Session) {
 
-	bytes, err := ioutil.ReadFile(cmdsFilePath)
+	bytes, err := ioutil.ReadFile(fmt.Sprintf("%s/src/fakeshell/cmds.txt", helpers.GetRootPath()))
 	helpers.CheckErr(err)
 	commandsList := strings.Split(string(bytes), "\n")
 

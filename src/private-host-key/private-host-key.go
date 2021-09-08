@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	"github.com/Ex0dIa-dev/ssh-honeypot-go/helpers"
+	"github.com/Ex0dIa-dev/ssh-honeypot-go/src/helpers"
 	gossh "golang.org/x/crypto/ssh"
 )
 

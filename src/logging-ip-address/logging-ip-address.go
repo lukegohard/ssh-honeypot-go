@@ -7,14 +7,14 @@ import (
 	"os"
 	"time"
 
-	"github.com/Ex0dIa-dev/ssh-honeypot-go/helpers"
+	"github.com/Ex0dIa-dev/ssh-honeypot-go/src/helpers"
 )
 
 // logRootPath is the root directory which contains all log files
-const logRootPath = "./logs/"
+var logRootPath = fmt.Sprintf("%s/logs/", helpers.GetRootPath())
 
 // logIPPath is the directory which constains all ip address log files
-const logIPPath = "./logs/ip-address/"
+var logIPPath = fmt.Sprintf("%s/ip-address/", logRootPath)
 
 // LogIPAddr write in the logIPPath file the given ip
 func LogIPAddr(ip net.Addr) {

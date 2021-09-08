@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Ex0dIa-dev/ssh-honeypot-go/writers/colors"
+	"github.com/Ex0dIa-dev/ssh-honeypot-go/src/writers/colors"
 )
 
 // Welcome message printed after authentication
