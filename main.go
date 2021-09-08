@@ -3,33 +3,30 @@ package main
 import (
 	"flag"
 	"fmt"
-	"io"
 	"log"
-	"log/syslog"
-	"os"
 	"time"
 
 	"github.com/gliderlabs/ssh"
 
 	"github.com/Ex0dIa-dev/ssh-honeypot-go/src/fakeshell"
 	"github.com/Ex0dIa-dev/ssh-honeypot-go/src/helpers"
-	loggingipaddress "github.com/Ex0dIa-dev/ssh-honeypot-go/src/logging-ip-address"
+	logging "github.com/Ex0dIa-dev/ssh-honeypot-go/src/logging"
 	"github.com/Ex0dIa-dev/ssh-honeypot-go/src/notifier"
 	hostkey "github.com/Ex0dIa-dev/ssh-honeypot-go/src/private-host-key"
 )
 
 func init() {
-	flag.StringVar(&port, "p", "2222", "enter the port for the honeypot server")
-	flag.StringVar(&hostKeyFile, "k", "", "enter the filepath of hostkey file")
+	flag.StringVar(&port, "port", "2222", "enter the port for the honeypot server")
+	flag.StringVar(&hostKeyFile, "keyfile", "", "enter the filepath of hostkey file")
 
-	flag.BoolVar(&notifyServiceActivated, "n", false, "activate notifier service")
-	flag.BoolVar(&logIPAddressActivated, "li", false, "activate ip address logging")
-	flag.BoolVar(&logAllAttempts, "la", false, "logging all attempts, failed too")
+	flag.BoolVar(&notifyServiceActivated, "notify", false, "activate notifier service")
+	flag.BoolVar(&logActivated, "log", false, "activate ip address logging")
+	flag.BoolVar(&logAllAttempts, "log-all", false, "logging all attempts, failed too")
 
 }
 
 var port, hostKeyFile string
-var notifyServiceActivated, logIPAddressActivated, logAllAttempts bool
+var notifyServiceActivated, logActivated, logAllAttempts bool
 var attempts = 0
 
 var config helpers.Config
@@ -37,11 +34,6 @@ var config helpers.Config
 func main() {
 
 	flag.Parse()
-
-	// setting Log Output to ==> 1) Os.Stdout 2) Syslog
-	logwriter, err := syslog.New(syslog.LOG_INFO, os.Args[0])
-	helpers.CheckErr(err)
-	log.SetOutput(io.MultiWriter(logwriter, os.Stdout))
 
 	config = helpers.ParseConfigFile()
 
@@ -67,7 +59,7 @@ func main() {
 		log.Printf("[+]Honeypot HostKey Mode: user-input-file")
 	}
 	log.Printf("[+]Notifier Service Activated: %v", notifyServiceActivated)
-	log.Printf("[+]Logging IP Address: %v", logIPAddressActivated)
+	log.Printf("[+]Logging IP Address: %v", logActivated)
 	log.Printf("[+]Logging All Attempts: %v", logAllAttempts)
 	fmt.Println()
 	log.Fatal(s.ListenAndServe())
@@ -94,8 +86,8 @@ func authHandler(ctx ssh.Context, passwd string) bool {
 			notifier.SendNotify("ssh-honeypot-go", fmt.Sprintf("Connection Attempt: %d", attempts), fmt.Sprintf("body%s", "failed"))
 		}
 
-		if logIPAddressActivated {
-			loggingipaddress.LogIPAddr(ctx.RemoteAddr())
+		if logActivated {
+			logging.Log(ctx.User(), passwd, ctx.RemoteAddr())
 		}
 
 		return false
@@ -107,8 +99,8 @@ func authHandler(ctx ssh.Context, passwd string) bool {
 		notifier.SendNotify("ssh-honeypot-go", fmt.Sprintf("Connection Attempt: %d", attempts), fmt.Sprintf("body%s", "conntected"))
 	}
 
-	if logIPAddressActivated {
-		loggingipaddress.LogIPAddr(ctx.RemoteAddr())
+	if logActivated {
+		logging.Log(ctx.User(), passwd, ctx.RemoteAddr())
 	}
 
 	return true

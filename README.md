@@ -64,37 +64,37 @@ Default:
 ```
 
 ```bash
-./ssh-honeypot-go -p <port>
+./ssh-honeypot-go -port <port>
 ```
 
 ```bash
-./ssh-honeypot-go -p <port> -n
+./ssh-honeypot-go -port <port> -notify
 ```
 
 ```bash
-./ssh-honeypot-go -p <port> -n -k <host private key filepath>
+./ssh-honeypot-go -port <port> -notify -keyfile <host private key filepath>
 ```
 
 ```bash
-./ssh-honeypot-go -p <port> -n -li
+./ssh-honeypot-go -port <port> -notify -log
 ```
 
 ```bash
-./ssh-honeypot-go -p <port> -la
+./ssh-honeypot-go -port <port> -log-all
 ```
 
 **Example:**
 
 ```bash
-./ssh-honeypot-go -p 1234 -n
+./ssh-honeypot-go -port 1234 -notify
 ```
 
 ```bash
-./ssh-honeypot-go -p 1234 -k hostkey_rsa -n
+./ssh-honeypot-go -port 1234 -keyfile hostkey_rsa -notify
 ```
 
 ```bash
-./ssh-honeypot-go -p 1234 -k hostkey_rsa -n -li
+./ssh-honeypot-go -port 1234 -keyfile hostkey_rsa -notify -log
 ```
 
 
@@ -103,11 +103,11 @@ Default:
 
 **Flags:**
 
-- '**-p**' ==> enter the honeypot server port(default: **2222**)
-- '**-n**' ==> activate notifier service(default: false)
-- '**-k**' ==> enter the filepath of host private key
-- '**-li**' ==> activate ip address logging(logs path: "./logs/ip-address")
-- **'-la'** ==> logging all attempts, failed too
+- '**-port**' ==> enter the honeypot server port(default: **2222**)
+- '**-notify**' ==> activate notifier service(default: false)
+- '**-keyfile**' ==> enter the filepath of host private key
+- '**-log**' ==> activate logging(logs path: "logs/")
+- **'-log-all'** ==> logging all attempts(terminal, and notification), failed too
 
 ****
 
