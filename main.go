@@ -91,7 +91,7 @@ func authHandler(ctx ssh.Context, passwd string) bool {
 		}
 
 		if notifyServiceActivated {
-			notifier.SendNotify("ssh-honeypot-go", fmt.Sprintf("Connection Attempt: %d", attempts), body)
+			notifier.SendNotify("ssh-honeypot-go", fmt.Sprintf("Connection Attempt: %d", attempts), fmt.Sprintf("body%s", "failed"))
 		}
 
 		if logIPAddressActivated {
@@ -104,7 +104,7 @@ func authHandler(ctx ssh.Context, passwd string) bool {
 	log.Println(fmt.Sprintf("[%d]%s%s", attempts, body, "connected"))
 
 	if notifyServiceActivated {
-		notifier.SendNotify("ssh-honeypot-go", fmt.Sprintf("Connection Attempt: %d", attempts), body)
+		notifier.SendNotify("ssh-honeypot-go", fmt.Sprintf("Connection Attempt: %d", attempts), fmt.Sprintf("body%s", "conntected"))
 	}
 
 	if logIPAddressActivated {
