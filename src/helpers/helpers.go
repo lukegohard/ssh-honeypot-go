@@ -26,7 +26,7 @@ func ParseConfigFile() Config {
 
 	var config Config
 
-	configBytes, err := ioutil.ReadFile(fmt.Sprintf("%s/config.json", GetRootPath()))
+	configBytes, err := ioutil.ReadFile(fmt.Sprintf("%s/config/config.json", GetRootPath()))
 	CheckErr(err)
 	err = json.Unmarshal(configBytes, &config)
 	CheckErr(err)

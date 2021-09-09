@@ -12,12 +12,11 @@ import (
 	"github.com/Ex0dIa-dev/ssh-honeypot-go/src/helpers"
 	logging "github.com/Ex0dIa-dev/ssh-honeypot-go/src/logging"
 	"github.com/Ex0dIa-dev/ssh-honeypot-go/src/notifier"
-	hostkey "github.com/Ex0dIa-dev/ssh-honeypot-go/src/private-host-key"
+	privatehostkey "github.com/Ex0dIa-dev/ssh-honeypot-go/src/private-host-key"
 )
 
 func init() {
 	flag.StringVar(&port, "port", "2222", "enter the port for the honeypot server")
-	flag.StringVar(&hostKeyFile, "keyfile", "", "enter the filepath of hostkey file")
 
 	flag.BoolVar(&notifyServiceActivated, "notify", false, "activate notifier service")
 	flag.BoolVar(&logActivated, "log", false, "activate ip address logging")
@@ -25,7 +24,7 @@ func init() {
 
 }
 
-var port, hostKeyFile string
+var port string
 var notifyServiceActivated, logActivated, logAllAttempts bool
 var attempts = 0
 
@@ -44,19 +43,22 @@ func main() {
 		IdleTimeout:     45 * time.Second,
 	}
 
-	// if hostKeyFile is empty,the key will be auto-generated
-	// else key will be read from file
-	if hostKeyFile != "" {
-		key, err := hostkey.ReadHostKeyFile(hostKeyFile)
+	keyFilePath := fmt.Sprintf("%s/config/hostkey_rsa", helpers.GetRootPath())
+	keyFileBool := helpers.FileExists(keyFilePath)
+
+	// keyFileBool is true(file exists), the key will be read from file
+	// else will be auto-generated
+	if keyFileBool {
+		key, err := privatehostkey.ReadHostKeyFile(keyFilePath)
 		helpers.CheckErr(err)
 		s.AddHostKey(key)
 	}
 
 	log.Printf("[+]Starting Honeypot Server on Address: %v\n", s.Addr)
-	if hostKeyFile == "" {
-		log.Print("[+]Honeypot HostKey Mode: auto-generated")
-	} else {
+	if keyFileBool {
 		log.Printf("[+]Honeypot HostKey Mode: user-input-file")
+	} else {
+		log.Print("[+]Honeypot HostKey Mode: auto-generated")
 	}
 	log.Printf("[+]Notifier Service Activated: %v", notifyServiceActivated)
 	log.Printf("[+]Logging IP Address: %v", logActivated)

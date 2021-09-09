@@ -30,12 +30,14 @@ for a lightweight binary.
 **Generate Host Private Key**(not obligatory, default host key will be auto generated):
 
 ```bash
-ssh-keygen -t <type> -b <bits> -N "" -f <output_filepath>
+ssh-keygen -t <type> -b <bits> -N "" -f config/hostkey_rsa
 ```
 
 ```bash
-ssh-keygen -t rsa -b 2048 -N "" -f hostkey_rsa
+ssh-keygen -t rsa -b 2048 -N "" -f config/hostkey_rsa
 ```
+
+**Hostkey file must be in config directory!**
 
 ****
 
@@ -72,10 +74,6 @@ Default:
 ```
 
 ```bash
-./ssh-honeypot-go -port <port> -notify -keyfile <host private key filepath>
-```
-
-```bash
 ./ssh-honeypot-go -port <port> -notify -log
 ```
 
@@ -90,14 +88,8 @@ Default:
 ```
 
 ```bash
-./ssh-honeypot-go -port 1234 -keyfile hostkey_rsa -notify
+./ssh-honeypot-go -port 1234 -notify -log
 ```
-
-```bash
-./ssh-honeypot-go -port 1234 -keyfile hostkey_rsa -notify -log
-```
-
-
 
 ****
 
@@ -105,7 +97,6 @@ Default:
 
 - '**-port**' ==> enter the honeypot server port(default: **2222**)
 - '**-notify**' ==> activate notifier service(default: false)
-- '**-keyfile**' ==> enter the filepath of host private key
 - '**-log**' ==> activate logging(logs path: "logs/")
 - **'-log-all'** ==> logging all attempts(terminal, and notification), failed too
 
