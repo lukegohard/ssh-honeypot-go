@@ -51,7 +51,7 @@ Default:
 {
 	"creator": "Ex0dIa-dev",
 	"auth": {
-		"user": 	"root",
+		"user":     "root",
 		"password": "toor"
 	}
 }
@@ -105,5 +105,6 @@ Default:
 **TODO LIST:**
 
 - [ ] *adding a fake shell as sessionHandler*
-- [x] log collected ip addresses in a file
+- [ ] *adding a Dockerfile*
+- [x] *log collected ip addresses in a file*
 
