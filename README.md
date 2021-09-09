@@ -49,7 +49,7 @@ Default:
 {
 	"creator": "Ex0dIa-dev",
 	"auth": {
-		"user": 	"root",
+		"user":     "root",
 		"password": "toor"
 	}
 }
