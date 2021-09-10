@@ -37,13 +37,13 @@ ssh-keygen -t <type> -b <bits> -N "" -f config/hostkey_rsa
 ssh-keygen -t rsa -b 2048 -N "" -f config/hostkey_rsa
 ```
 
-**Hostkey file must be in config directory!**
+**Hostkey file must be in config directory! And with no password!**
 
 ****
 
 **Changing Username and Password:**
 
-Edit the *config.json* file.
+Edit the *config/config.json* file.
 
 Default:
 
@@ -56,6 +56,37 @@ Default:
 	}
 }
 ```
+
+****
+
+**Run on Docker:**
+
+*Build image:*
+
+```bash
+//First generate your hostkey and put it in config/ -->(not obligatory,will be auto-generated)
+//Then you can build image
+docker build -t <image-name> .
+
+//Example
+docker build -t ssh-honeypot-go .
+```
+
+*Run a container:*
+
+```bash
+docker run --rm -v $PWD/logs:/app/logs -p <host_port>:<honeypot_port> <image_name>
+//Example
+docker run --rm -v $PWD/logs:/app/logs -p 22:2222 ssh-honeypot-go
+
+//You can use flags too
+docker run --rm -v $PWD/logs:/app/logs -p <host_port>:<honeypot_port> <image_name> -port <honeypot_port> -log
+
+//Example
+docker run --rm -v $PWD/logs:/app/logs -p 22:1234 ssh-honeypot-go -port 1234 -log
+```
+
+**Notification Service doesn't work! Using it will crash the app!**
 
 ****
 
@@ -78,7 +109,7 @@ Default:
 ```
 
 ```bash
-./ssh-honeypot-go -port <port> -log-all
+./ssh-honeypot-go -port <port> -log -log-all
 ```
 
 **Example:**
@@ -96,7 +127,7 @@ Default:
 **Flags:**
 
 - '**-port**' ==> enter the honeypot server port(default: **2222**)
-- '**-notify**' ==> activate notifier service(default: false)
+- '**-notify**' ==> activate notification service(default: false)
 - '**-log**' ==> activate logging(logs path: "logs/")
 - **'-log-all'** ==> logging all attempts(terminal, and notification), failed too
 
@@ -104,7 +135,7 @@ Default:
 
 **TODO LIST:**
 
-- [ ] *adding a fake shell as sessionHandler*
-- [ ] *adding a Dockerfile*
-- [x] *log collected ip addresses in a file*
+- [x] *adding a fake shell as sessionHandler(temporary)*
+- [x] *adding a Dockerfile*
+- [x] *log collected data in a file*
 
