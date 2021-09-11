@@ -143,5 +143,7 @@ docker run --rm -v $PWD/config:/app/config -v $PWD/logs:/app/logs -p 22:1234 ssh
 ****
 
 **Support Project**
-Support the project with a donation
+Support the me and the project with a donation. Thanks You!
+
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate?hosted_button_id=Z93ULXU3H2TQC)
+
