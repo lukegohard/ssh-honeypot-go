@@ -25,8 +25,15 @@ type Auth struct {
 func ParseConfigFile() Config {
 
 	var config Config
+	var configPath string
 
-	configBytes, err := ioutil.ReadFile(fmt.Sprintf("%s/config/config.json", GetRootPath()))
+	if os.Getenv("HONEYPOT_CONFIGFILE") == "" {
+		configPath = fmt.Sprintf("%s/config/config.json", GetRootPath())
+	} else {
+		configPath = os.Getenv("HONEYPOT_CONFIGFILE")
+	}
+
+	configBytes, err := ioutil.ReadFile(configPath)
 	CheckErr(err)
 	err = json.Unmarshal(configBytes, &config)
 	CheckErr(err)

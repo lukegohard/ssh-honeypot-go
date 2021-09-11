@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"os"
 	"strings"
 
 	"github.com/Ex0dIa-dev/ssh-honeypot-go/src/helpers"
@@ -17,7 +18,16 @@ import (
 // Read command, and "execute" them
 func FakeShell(s ssh.Session) {
 
-	bytes, err := ioutil.ReadFile(fmt.Sprintf("%s/src/fakeshell/cmds.txt", helpers.GetRootPath()))
+	var cmdsFilePath string
+
+	// if this env exists, honeypot is running on docker, and path is "/app/config/cmds.txt"
+	if os.Getenv("HONEYPOT_CMDFILE") == "" {
+		cmdsFilePath = fmt.Sprintf("%s/config/cmds.txt", helpers.GetRootPath())
+	} else {
+		cmdsFilePath = os.Getenv("HONEYPOT_CMDFILE")
+	}
+
+	bytes, err := ioutil.ReadFile(cmdsFilePath)
 	helpers.CheckErr(err)
 	commandsList := strings.Split(string(bytes), "\n")
 

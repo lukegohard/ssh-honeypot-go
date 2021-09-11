@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"os"
 	"time"
 
 	"github.com/gliderlabs/ssh"
@@ -43,7 +44,15 @@ func main() {
 		IdleTimeout:     45 * time.Second,
 	}
 
-	keyFilePath := fmt.Sprintf("%s/config/hostkey_rsa", helpers.GetRootPath())
+	var keyFilePath string
+
+	// if this env exists, honeypot is running on docker, and path is "/app/config/hostkey_rsa"
+	if os.Getenv("HONEYPOT_HOSTKEYFILE") == "" {
+		keyFilePath = fmt.Sprintf("%s/config/hostkey_rsa", helpers.GetRootPath())
+	} else {
+		keyFilePath = os.Getenv("HONEYPOT_HOSTKEYFILE")
+	}
+
 	keyFileBool := helpers.FileExists(keyFilePath)
 
 	// keyFileBool is true(file exists), the key will be read from file

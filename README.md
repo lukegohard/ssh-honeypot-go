@@ -75,15 +75,15 @@ docker build -t ssh-honeypot-go .
 *Run a container:*
 
 ```bash
-docker run --rm -v $PWD/logs:/app/logs -p <host_port>:<honeypot_port> <image_name>
+docker run --rm -v $PWD/config:/app/config -v $PWD/logs:/app/logs -p <host_port>:<honeypot_port> <image_name>
 //Example
-docker run --rm -v $PWD/logs:/app/logs -p 22:2222 ssh-honeypot-go
+docker run --rm -v $PWD/config:/app/config -v $PWD/logs:/app/logs -p 22:2222 ssh-honeypot-go
 
 //You can use flags too
-docker run --rm -v $PWD/logs:/app/logs -p <host_port>:<honeypot_port> <image_name> -port <honeypot_port> -log
+docker run --rm -v $PWD/config:/app/config -v $PWD/logs:/app/logs -p <host_port>:<honeypot_port> <image_name> -port <honeypot_port> -log
 
 //Example
-docker run --rm -v $PWD/logs:/app/logs -p 22:1234 ssh-honeypot-go -port 1234 -log
+docker run --rm -v $PWD/config:/app/config -v $PWD/logs:/app/logs -p 22:1234 ssh-honeypot-go -port 1234 -log
 ```
 
 **Notification Service doesn't work! Using it will crash the app!**
