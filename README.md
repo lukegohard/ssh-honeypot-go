@@ -1,7 +1,7 @@
 ### ssh-honeypot-go
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/Ex0dIa-dev/ssh-honeypot-go)](https://goreportcard.com/report/github.com/Ex0dIa-dev/ssh-honeypot-go)
-[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate?hosted_button_id=Z93ULXU3H2TQC)
+
 *****
 
 **Dependencies:**
@@ -140,3 +140,8 @@ docker run --rm -v $PWD/config:/app/config -v $PWD/logs:/app/logs -p 22:1234 ssh
 - [x] *adding a Dockerfile*
 - [x] *log collected data in a file*
 
+****
+
+**Support Project**
+Support the project with a donation
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate?hosted_button_id=Z93ULXU3H2TQC)
