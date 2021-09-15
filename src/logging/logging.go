@@ -2,16 +2,15 @@ package logging
 
 import (
 	"fmt"
-	"log"
-	"net"
 	"os"
 	"time"
 
 	"github.com/Ex0dIa-dev/ssh-honeypot-go/src/helpers"
+	"github.com/sirupsen/logrus"
 )
 
 // Log write in the logRootPath file the given data
-func Log(user, passwd string, ip net.Addr) {
+func Log(user, passwd, ip, status string) {
 
 	var logRootPath string
 
@@ -33,6 +32,14 @@ func Log(user, passwd string, ip net.Addr) {
 	helpers.CheckErr(err)
 	defer fd.Close()
 
-	logger := log.New(fd, "", log.Ltime)
-	logger.Println(fmt.Sprintf("User: %s, Password: %s, IPAddress: %s", user, passwd, ip))
+	logrus.SetFormatter(&logrus.JSONFormatter{
+		TimestampFormat: "15:04:05",
+	})
+	logrus.SetOutput(fd)
+	logrus.WithFields(logrus.Fields{
+		"ipaddr":   ip,
+		"username": user,
+		"password": passwd,
+		"status":   status,
+	}).Info("attempt")
 }

@@ -4,7 +4,9 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"net"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/gliderlabs/ssh"
@@ -85,33 +87,45 @@ func sessionHandler(s ssh.Session) {
 // authHandler collects authentication info(username,password,ip) and logs them
 func authHandler(ctx ssh.Context, passwd string) bool {
 	attempts++
-	body := fmt.Sprintf("User: %s,Password: %s, Address: %s, Status: ", ctx.User(), passwd, ctx.RemoteAddr())
+
+	var clientIP string
+	if strings.ContainsRune(ctx.RemoteAddr().String(), ':') {
+		clientIP, _, _ = net.SplitHostPort(ctx.RemoteAddr().String())
+	} else {
+		clientIP = ctx.RemoteAddr().String()
+	}
+
+	body := fmt.Sprintf("User: %s,Password: %s, Address: %s, Status: ", ctx.User(), passwd, clientIP)
 
 	if ctx.User() != config.Auth.User || passwd != config.Auth.Password {
 
+		status := "failed"
+
 		if logAllAttempts {
-			log.Println(fmt.Sprintf("[%d]%s%s", attempts, body, "failed"))
+			log.Println(fmt.Sprintf("[%d]%s%s", attempts, body, status))
 		}
 
 		if notifyServiceActivated {
-			notifier.SendNotify("ssh-honeypot-go", fmt.Sprintf("Connection Attempt: %d", attempts), fmt.Sprintf("body%s", "failed"))
+			notifier.SendNotify("ssh-honeypot-go", fmt.Sprintf("Connection Attempt: %d", attempts), fmt.Sprintf("body%s", status))
 		}
 
 		if logActivated {
-			logging.Log(ctx.User(), passwd, ctx.RemoteAddr())
+			logging.Log(ctx.User(), passwd, clientIP, status)
 		}
 
 		return false
 	}
 
-	log.Println(fmt.Sprintf("[%d]%s%s", attempts, body, "connected"))
+	status := "connected"
+
+	log.Println(fmt.Sprintf("[%d]%s%s", attempts, body, status))
 
 	if notifyServiceActivated {
-		notifier.SendNotify("ssh-honeypot-go", fmt.Sprintf("Connection Attempt: %d", attempts), fmt.Sprintf("body%s", "conntected"))
+		notifier.SendNotify("ssh-honeypot-go", fmt.Sprintf("Connection Attempt: %d", attempts), fmt.Sprintf("body%s", status))
 	}
 
 	if logActivated {
-		logging.Log(ctx.User(), passwd, ctx.RemoteAddr())
+		logging.Log(ctx.User(), passwd, clientIP, status)
 	}
 
 	return true
